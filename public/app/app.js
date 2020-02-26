@@ -2,6 +2,7 @@
 import { notasService as service } from './nota/service.js';
 import './utils/array-helpers.js';
 import { takeUntil, debounceTime, partialize, compose } from './utils/operators.js';
+import { timeoutPromise } from './utils/promise-helpers.js'
 
 const operations = compose(
     partialize(debounceTime, 500),
@@ -9,8 +10,7 @@ const operations = compose(
 );
 
 const action = operations(() => 
-    service
-    .sumItems('2143')
+    timeoutPromise(200, service.sumItems('2143'))
     .then(console.log)
     .catch(console.log)
 )
