@@ -1,7 +1,7 @@
 // app/app.js
 import { notasService as service } from './nota/service.js';
 import './utils/array-helpers.js';
-import { takeUntil, debounceTime, partialize, compose } from './utils/operators.js';
+import { takeUntil, debounceTime, partialize, compose, pipe } from './utils/operators.js';
 import { timeoutPromise, retry } from './utils/promise-helpers.js';
 import { EventEmitter } from './utils/event-emitter.js';
 import { Maybe } from './utils/maybe.js'
@@ -11,6 +11,13 @@ const value = Maybe.of(null)
 .map(value => value + 30)
 .getOrElse(0);
 alert(value)
+
+const textToArray = textM => textM.map(text => Array.from(text));
+const arrayToText = arrayM => arrayM.map(array => array.join(''));
+
+const transform = pipe(textToArray, arrayToText);
+const result = transform(Maybe.of('teste1'));
+alert(result.getOrElse(''))
 
 const operations = compose(
     partialize(debounceTime, 500),
